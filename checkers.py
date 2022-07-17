@@ -362,6 +362,6 @@ class Checkers():
 
         return winner, it, first_move
 
-# game = Checkers(8)
-# winner = game.play(agent_ten_random_games,agent_heuristic_one_step)
-# print(winner[:2])
+game = Checkers(8)
+winner = game.play(agent_ten_random_games,agent_heuristic_one_step)
+print(winner[:2])
