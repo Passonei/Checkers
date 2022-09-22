@@ -176,10 +176,6 @@ class Checkers():
         pygame.display.update()
 
     def pieces(self,):
-        # x, y = np.where(self.board == t+1)
-        # pos = list(zip(x,y))
-        # xk, yk = np.where(self.board == t+3)
-        # king_pos = list(zip(xk, yk))
         pos = []
         king_pos = []
         for row in range(self.ROW_COUNT):
@@ -271,8 +267,7 @@ class Checkers():
                         screen = pygame.display.set_mode((self.ROW_COUNT*self.SQUARESIZE,(self.ROW_COUNT+1)*self.SQUARESIZE))
                         radius = int(self.SQUARESIZE/2 - self.ROW_COUNT)
                         self.draw_board()
-                        pygame.draw.circle(screen, self.WHITE, (int(col*self.SQUARESIZE+self.SQUARESIZE/2), int(row*self.SQUARESIZE+self.SQUARESIZE/2)),radius*20000)
-                    
+                        pygame.draw.circle(screen, self.WHITE, (int(col*self.SQUARESIZE+self.SQUARESIZE/2), int(row*self.SQUARESIZE+self.SQUARESIZE/2)),radius*20000)                
         return move
 
     def play_vs_agent(self, player_turn, agent):
