@@ -4,11 +4,12 @@ import time
 import pygame
 import math
 import random
-from agents import *
+import os
+os.environ["SDL_VIDEODRIVER"] = "dummy"
 
 class Checkers():
 
-    def __init__(self, ROWS_COUNT, show=True):
+    def __init__(self, ROWS_COUNT=8, show=True):
         self.ROW_COUNT = ROWS_COUNT
         self.SQUARESIZE = 50
         self.BLACK = pygame.Color('black')
@@ -39,13 +40,16 @@ class Checkers():
         self.board[position[0]][position[1]] = 0
         a=int((position[0]-position[2])/abs(position[0]-position[2]))
         b=int((position[1]-position[3])/abs(position[1]-position[3]))
+
         if abs(position[0]-position[2])!=1 and self.board[position[2]+a][position[3]+b] != 0:
             self.board[position[2]+a][position[3]+b] = 0
             new_position = [position[2:]]
+
             if len(self.capture(new_position)) != 0:
                 if self.show == True:
                     self.draw_board()
                     time.sleep(0.5)
+
                 return self.make_move(self.capture(new_position)[0])
 
     def capture(self, position):
@@ -58,38 +62,76 @@ class Checkers():
         for i in range(2):
             for pos in position:
                 try:
-                    if pos[1] == 0 or pos[1] == 1:
-                        if self.board[pos[0]-1][pos[1]+1]==oponent and self.board[pos[0]-2][pos[1]+2]==0 and pos[0]!=0 and pos[0]!=1:
+                    if pos[1] == 0 or pos[1] == 1: #capture at the left wall
+                        if (self.board[pos[0]-1][pos[1]+1]==oponent and 
+                            self.board[pos[0]-2][pos[1]+2]==0 and 
+                            pos[0]!=0 and pos[0]!=1):
+
                             capture_move.append([pos[0],pos[1],pos[0]-2,pos[1]+2])
-                        if self.board[pos[0]+1][pos[1]+1]==oponent and self.board[pos[0]+2][pos[1]+2]==0 and pos[0]!=self.ROW_COUNT-1 and pos[0]!=self.ROW_COUNT-2:
+
+                        if (self.board[pos[0]+1][pos[1]+1]==oponent and 
+                            self.board[pos[0]+2][pos[1]+2]==0 and 
+                            pos[0]!=self.ROW_COUNT-1 and pos[0]!=self.ROW_COUNT-2):
+
                             capture_move.append([pos[0],pos[1],pos[0]+2,pos[1]+2])
                         
-                    elif pos[1] == self.ROW_COUNT-1 or pos[1] == self.ROW_COUNT-2:
-                        if self.board[pos[0]-1][pos[1]-1]==oponent and self.board[pos[0]-2][pos[1]-2]==0 and pos[0]!=0 and pos[0]!=1:
+                    elif pos[1] == self.ROW_COUNT-1 or pos[1] == self.ROW_COUNT-2: #capture at the right wall
+                        if (self.board[pos[0]-1][pos[1]-1]==oponent and 
+                            self.board[pos[0]-2][pos[1]-2]==0 and 
+                            pos[0]!=0 and pos[0]!=1):
+
                             capture_move.append([pos[0],pos[1],pos[0]-2,pos[1]-2])
-                        if self.board[pos[0]+1][pos[1]-1]==oponent and self.board[pos[0]+2][pos[1]-2]==0 and pos[0]!=self.ROW_COUNT-1 and pos[0]!=self.ROW_COUNT-2:
+
+                        if (self.board[pos[0]+1][pos[1]-1]==oponent and 
+                            self.board[pos[0]+2][pos[1]-2]==0 and 
+                            pos[0]!=self.ROW_COUNT-1 and pos[0]!=self.ROW_COUNT-2):
+
                             capture_move.append([pos[0],pos[1],pos[0]+2,pos[1]-2])
                     
-                    elif pos[0] == 0 or pos[0] == 1:
-                        if self.board[pos[0]+1][pos[1]+1]==oponent and self.board[pos[0]+2][pos[1]+2]==0 and pos[1]!=self.ROW_COUNT-1 and pos[1]!=self.ROW_COUNT-2:
+                    elif pos[0] == 0 or pos[0] == 1: #capture at the top wall
+                        if (self.board[pos[0]+1][pos[1]+1]==oponent and 
+                            self.board[pos[0]+2][pos[1]+2]==0 and 
+                            pos[1]!=self.ROW_COUNT-1 and pos[1]!=self.ROW_COUNT-2):
                             capture_move.append([pos[0],pos[1],pos[0]+2,pos[1]+2])
-                        if self.board[pos[0]+1][pos[1]-1]==oponent and self.board[pos[0]+2][pos[1]-2]==0 and pos[1]!=0 and pos[1]!=1:
+
+                        if (self.board[pos[0]+1][pos[1]-1]==oponent and 
+                            self.board[pos[0]+2][pos[1]-2]==0 and 
+                            pos[1]!=0 and pos[1]!=1):
+
                             capture_move.append([pos[0],pos[1],pos[0]+2,pos[1]-2])
 
-                    elif pos[0] == self.ROW_COUNT-1 or pos[0] == self.ROW_COUNT-2:
-                        if self.board[pos[0]-1][pos[1]+1]==oponent and self.board[pos[0]-2][pos[1]+2]==0 and pos[1]!=self.ROW_COUNT-1 and pos[1]!=self.ROW_COUNT-2:
+                    elif pos[0] == self.ROW_COUNT-1 or pos[0] == self.ROW_COUNT-2: #capture at the bottom wall
+                        if (self.board[pos[0]-1][pos[1]+1]==oponent and 
+                            self.board[pos[0]-2][pos[1]+2]==0 and 
+                            pos[1]!=self.ROW_COUNT-1 and pos[1]!=self.ROW_COUNT-2):
+
                             capture_move.append([pos[0],pos[1],pos[0]-2,pos[1]+2])
-                        if self.board[pos[0]-1][pos[1]-1]==oponent and self.board[pos[0]-2][pos[1]-2]==0 and pos[1]!=0 and pos[1]!=1:
+
+                        if (self.board[pos[0]-1][pos[1]-1]==oponent and 
+                            self.board[pos[0]-2][pos[1]-2]==0 and 
+                            pos[1]!=0 and pos[1]!=1):
+
                             capture_move.append([pos[0],pos[1],pos[0]-2,pos[1]-2])
                         
                     else:
-                        if self.board[pos[0]-1][pos[1]+1]==oponent and self.board[pos[0]-2][pos[1]+2]==0:
+                        if (self.board[pos[0]-1][pos[1]+1]==oponent and 
+                            self.board[pos[0]-2][pos[1]+2]==0):
+                        
                             capture_move.append([pos[0],pos[1],pos[0]-2,pos[1]+2])
-                        if self.board[pos[0]-1][pos[1]-1]==oponent and self.board[pos[0]-2][pos[1]-2]==0:
+                        
+                        if (self.board[pos[0]-1][pos[1]-1]==oponent and 
+                            self.board[pos[0]-2][pos[1]-2]==0):
+                        
                             capture_move.append([pos[0],pos[1],pos[0]-2,pos[1]-2])
-                        if self.board[pos[0]+1][pos[1]+1]==oponent and self.board[pos[0]+2][pos[1]+2]==0:
+                        
+                        if (self.board[pos[0]+1][pos[1]+1]==oponent and 
+                            self.board[pos[0]+2][pos[1]+2]==0):
+                        
                             capture_move.append([pos[0],pos[1],pos[0]+2,pos[1]+2])
-                        if self.board[pos[0]+1][pos[1]-1]==oponent and self.board[pos[0]+2][pos[1]-2]==0:
+                        
+                        if (self.board[pos[0]+1][pos[1]-1]==oponent and 
+                            self.board[pos[0]+2][pos[1]-2]==0):
+
                             capture_move.append([pos[0],pos[1],pos[0]+2,pos[1]-2])
                     
                     num_of_new_capture = len(capture_move) - num_of_capture
@@ -99,7 +141,8 @@ class Checkers():
                         for i in range(1,num_of_new_capture+1):
                             capture_move[-i][0] = pos[2]
                             capture_move[-i][1] = pos[3]
-                            if capture_move[-i][0]-capture_move[-i][1] == capture_move[-i][2]-capture_move[-i][3] or capture_move[-i][0]+capture_move[-i][1] == capture_move[-i][2]+capture_move[-i][3]:
+                            if (capture_move[-i][0]-capture_move[-i][1] == capture_move[-i][2]-capture_move[-i][3] or 
+                                capture_move[-i][0]+capture_move[-i][1] == capture_move[-i][2]+capture_move[-i][3]):
                                 pass
                             else:
                                 remove_list.append(capture_move[-i])
@@ -119,26 +162,34 @@ class Checkers():
                     if pos[1] == 0:
                         if self.board[pos[0]-1][pos[1]+1] == 0:
                             move.append([pos[0],pos[1],pos[0]-1,pos[1]+1])
+
                     elif pos[1] == self.ROW_COUNT-1:
                         if self.board[pos[0]-1][pos[1]-1] == 0:
                             move.append([pos[0],pos[1],pos[0]-1,pos[1]-1])
+
                     else:
                         if self.board[pos[0]-1][pos[1]+1] == 0:
                             move.append([pos[0],pos[1],pos[0]-1,pos[1]+1])
+
                         if self.board[pos[0]-1][pos[1]-1] == 0:
                             move.append([pos[0],pos[1],pos[0]-1,pos[1]-1])
+
                 if self.turn == 0:
                     if pos[1] == 0:
                         if self.board[pos[0]+1][pos[1]+1] == 0:
                             move.append([pos[0],pos[1],pos[0]+1,pos[1]+1])
+
                     elif pos[1] == self.ROW_COUNT-1:
                         if self.board[pos[0]+1][pos[1]-1] == 0:
                             move.append([pos[0],pos[1],pos[0]+1,pos[1]-1])
+
                     else:
                         if self.board[pos[0]+1][pos[1]+1] == 0:
                             move.append([pos[0],pos[1],pos[0]+1,pos[1]+1])
+
                         if self.board[pos[0]+1][pos[1]-1] == 0:
                             move.append([pos[0],pos[1],pos[0]+1,pos[1]-1])
+
             except: continue
         return move
 
@@ -157,22 +208,30 @@ class Checkers():
         for row in range(self.ROW_COUNT):
             for col in range(self.ROW_COUNT):
                 if (row+col) % 2 == 0:
-                    pygame.draw.rect(screen, self.BISQUE, (col*self.SQUARESIZE, row*self.SQUARESIZE,self.SQUARESIZE,self.SQUARESIZE))
+                    pygame.draw.rect(screen, self.BISQUE, (col*self.SQUARESIZE, row*self.SQUARESIZE,
+                                                            self.SQUARESIZE,self.SQUARESIZE))
                 else:
-                    pygame.draw.rect(screen, self.BROWN, (col*self.SQUARESIZE, row*self.SQUARESIZE,self.SQUARESIZE,self.SQUARESIZE))
+                    pygame.draw.rect(screen, self.BROWN, (col*self.SQUARESIZE, row*self.SQUARESIZE,
+                                                            self.SQUARESIZE,self.SQUARESIZE))
 
         for row in range(self.ROW_COUNT):
             for col in range(self.ROW_COUNT):
                 if self.board[row][col] == 1:
-                    pygame.draw.circle(screen, self.BLACK, (int(col*self.SQUARESIZE+self.SQUARESIZE/2), int(row*self.SQUARESIZE+self.SQUARESIZE/2)),radius)
+                    pygame.draw.circle(screen, self.BLACK, (int(col*self.SQUARESIZE+self.SQUARESIZE/2), 
+                                                            int(row*self.SQUARESIZE+self.SQUARESIZE/2)),radius)
                 if self.board[row][col] == 2:
-                    pygame.draw.circle(screen, self.WHITE, (int(col*self.SQUARESIZE+self.SQUARESIZE/2), int(row*self.SQUARESIZE+self.SQUARESIZE/2)),radius)
+                    pygame.draw.circle(screen, self.WHITE, (int(col*self.SQUARESIZE+self.SQUARESIZE/2), 
+                                                            int(row*self.SQUARESIZE+self.SQUARESIZE/2)),radius)
                 if self.board[row][col] == 3:
-                    pygame.draw.circle(screen, self.BLACK, (int(col*self.SQUARESIZE+self.SQUARESIZE/2), int(row*self.SQUARESIZE+self.SQUARESIZE/2)),radius)
-                    pygame.draw.circle(screen, self.BROWN, (int(col*self.SQUARESIZE+self.SQUARESIZE/2), int(row*self.SQUARESIZE+self.SQUARESIZE/2)),radius/2)
+                    pygame.draw.circle(screen, self.BLACK, (int(col*self.SQUARESIZE+self.SQUARESIZE/2), 
+                                                            int(row*self.SQUARESIZE+self.SQUARESIZE/2)),radius)
+                    pygame.draw.circle(screen, self.BROWN, (int(col*self.SQUARESIZE+self.SQUARESIZE/2), 
+                                                            int(row*self.SQUARESIZE+self.SQUARESIZE/2)),radius/2)
                 if self.board[row][col] == 4:
-                    pygame.draw.circle(screen, self.WHITE, (int(col*self.SQUARESIZE+self.SQUARESIZE/2), int(row*self.SQUARESIZE+self.SQUARESIZE/2)),radius)
-                    pygame.draw.circle(screen, self.BROWN, (int(col*self.SQUARESIZE+self.SQUARESIZE/2), int(row*self.SQUARESIZE+self.SQUARESIZE/2)),radius/2)
+                    pygame.draw.circle(screen, self.WHITE, (int(col*self.SQUARESIZE+self.SQUARESIZE/2), 
+                                                            int(row*self.SQUARESIZE+self.SQUARESIZE/2)),radius)
+                    pygame.draw.circle(screen, self.BROWN, (int(col*self.SQUARESIZE+self.SQUARESIZE/2), 
+                                                            int(row*self.SQUARESIZE+self.SQUARESIZE/2)),radius/2)
         pygame.display.update()
 
     def pieces(self,):
@@ -182,8 +241,10 @@ class Checkers():
             for col in range(self.ROW_COUNT):
                 if self.board[row][col] == self.turn+1:
                     pos.append([row,col])
+
                 if self.board[row][col] == self.turn+3:
                     king_pos.append([row,col])
+                    
         return pos, king_pos
 
     def valid_moves(self, positions, kings_positions):
@@ -194,6 +255,7 @@ class Checkers():
         capture_normal = self.capture(positions+kings_positions)
         long_capture = self.capture(long_capture_position)
         capture = capture_normal + long_capture
+
         if len(capture) == 0:
             return not_capture_moves
         else:
@@ -213,29 +275,37 @@ class Checkers():
         diagonal = []
         row = position[0]
         col = position[1]
+
         while 0 <= row <= self.ROW_COUNT-1 and 0 <= col <= self.ROW_COUNT-1:
             if [row,col] != position:
                 diagonal.append([row,col])
+
             row += change_diagonal[0]
             col += change_diagonal[1]
+
         return diagonal
 
     def kings_move(self, king_pos):
         normal_king_move = []
         jump_move = []
+
         for pos in king_pos:
             for direction in range(4):
                 change_diagonal = self.rotate_diagonal(direction)
                 position_on_diagonal = self.diagonal(pos, change_diagonal)
+
                 for pos1, pos2 in position_on_diagonal:
                     if self.board[pos1,pos2] != 0:
                         jump_move.append([pos1-change_diagonal[0], pos2-change_diagonal[1], pos[0], pos[1]]) 
                         break
+
                     elif [pos1, pos2] == position_on_diagonal[-1] and [pos1, pos2] != pos:
                         jump_move.append([pos1, pos2, pos[0], pos[1]]) 
                         break
+
                     else:
-                        normal_king_move.append([pos[0], pos[1], pos1, pos2]) 
+                        normal_king_move.append([pos[0], pos[1], pos1, pos2])
+
         return normal_king_move, jump_move
 
     def who_won(self, positions, kings_positions):
@@ -275,11 +345,11 @@ class Checkers():
             first_player = 'player'
             second_player = agent
             self.agent_white = first_player
-            self.agent_black = second_player.__name__
+            self.agent_black = second_player.__class__.__name__
         else:
             first_player = agent
             second_player = 'player'
-            self.agent_white = first_player.__name__
+            self.agent_white = first_player.__class__.__name__
             self.agent_black = second_player
 
         pygame.init()
@@ -299,7 +369,7 @@ class Checkers():
             else:
                 agent = second_player
 
-            if agent == agent_heuristic_one_step or agent == agent_minmax:
+            if agent.__class__.__name__ == "agent_one_step_heuristic" or agent.__class__.__name__ == "agent_minmax":
                 param = self.board
             else:
                 param = self.turn
@@ -310,7 +380,7 @@ class Checkers():
                     player_move = self.player_choose_move()
                 self.make_move(player_move)             
             else:
-                move = agent(valid_moves, param)
+                move = agent.decision(valid_moves, param)
                 self.make_move(move)
 
             self.change_to_king()
@@ -330,8 +400,8 @@ class Checkers():
 
     def play(self, agent_white, agent_black):
         if self.show == True:
-            self.agent_white = agent_white.__name__
-            self.agent_black = agent_black.__name__
+            self.agent_white = agent_white.__class__.__name__
+            self.agent_black = agent_black.__class__.__name__
             pygame.init()
             self.draw_board()
 
@@ -350,12 +420,12 @@ class Checkers():
             else:
                 agent = agent_black
 
-            if agent == agent_heuristic_one_step or agent == agent_minmax:
+            if agent.__class__.__name__ == "agent_one_step_heuristic" or agent.__class__.__name__ == "agent_minmax":
                 param = self.board
             else:
                 param = self.turn
 
-            move = agent(valid_moves, param)
+            move = agent.decision(valid_moves, param)
             self.make_move(move)
 
             self.change_to_king()
@@ -374,8 +444,3 @@ class Checkers():
             winner = 'White'
 
         return winner, it
-
-game = Checkers(8) 
-# winner = game.play_vs_agent(1, agent_minmax) 
-winner = game.play(agent_minmax,agent_heuristic_one_step)
-print(winner[:2])
