@@ -23,7 +23,12 @@ The game has official rules such as:
       Declaration of the agent making the second move.  
   ###### Return :   
     Two-element list contains the winning player and the total number of moves made during the game. 
-   
+  <p align="center">
+  <b> Example game between two agents <b/>   
+  
+  ![](https://github.com/Passonei/Checkers/blob/master/SampleGame.gif)  
+  </p>
+  
   #### play_vs_agent(player_turn, agent)  
   It plays a game between player and agents.  
   ###### Parameters:  
