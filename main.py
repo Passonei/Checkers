@@ -3,11 +3,12 @@ from heuristic_agent import agent_one_step_heuristic
 from minmax_agent import agent_minmax
 import time
 
-def main():
-    player1 = agent_minmax()
-    player2 = agent_one_step_heuristic()
+def show_result(ratio, player1, player2):
+    print(f"White_ratio {player1.__class__.__name__}: {ratio[0]} [%]")
+    print(f"Black_ratio {player2.__class__.__name__}: {ratio[1]} [%]")
+    print()
 
-    n = 100
+def n_matches(n, player1, player2):
     win_ratio = [0, 0, 0, 0]
     
     for i in range(n):
@@ -17,23 +18,28 @@ def main():
             win_ratio[0] += 1
         else: win_ratio[1] += 1
 
-        game = Checkers(8,False)
-        winner = game.play(player2, player1)
-        if winner[0] == "White":
-            win_ratio[2] += 1
-        else: win_ratio[3] += 1
-
     win_ratio = map(lambda x: round(x*100/n, 2), win_ratio)
     win_ratio = list(win_ratio)
+    return win_ratio
 
-    print("white_ratio_minmax: ", win_ratio[0], " [%]")
-    print("black_ration_one: ", win_ratio[1], " [%]")
-    print()
-    print("white_ratio_one: ", win_ratio[2], " [%]")
-    print("black_ratio_minmax: ", win_ratio[3], " [%]")
+def main():
+    player1 = agent_minmax()
+    player2 = agent_one_step_heuristic()
+    n = 100
+
+    win_ratio = n_matches(n, player1, player2)
+    show_result(win_ratio, player1, player2)
+
+    win_ratio = n_matches(n, player2, player1)
+    show_result(win_ratio, player2, player1)
 
 if __name__ == "__main__":
     start = time.time()
-    main()
+    try:
+        main()
+    except Exception as e:
+        if(str(e)=="No available video device"):
+            print("No available video device. Run with changing Checker's show parameter to False.")
+
     stop = time.time()
     print(stop-start)

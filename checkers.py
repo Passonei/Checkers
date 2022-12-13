@@ -1,11 +1,7 @@
 import numpy as np
-import sys
 import time
 import pygame
 import math
-import random
-import os
-os.environ["SDL_VIDEODRIVER"] = "dummy"
 
 class Checkers():
 

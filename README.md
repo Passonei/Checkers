@@ -78,7 +78,7 @@ The game has official rules such as:
         Defining the number of moves after which the heuristic is to be calculated.
     weight : list, optional  
         List of five integers values that are the weights of the parameters when calculating the heuristic.  
-        Score = Matrix product of weight and X, where X=[a, b, c, d, e]
+        Score = Matrix product of weight and X, where X=[a, b, c, d, e, f]
         a - num of pieces, 
         b - num of kings, 
         c - num of oponent's pieces, 
