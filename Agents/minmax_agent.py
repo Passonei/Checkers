@@ -1,7 +1,7 @@
 import random
 import numpy as np
 from checkers import Checkers
-from heuristic_agent import agent_one_step_heuristic
+from Agents.heuristic_agent import agent_one_step_heuristic
 
 class agent_minmax(agent_one_step_heuristic,Checkers):
     def __init__(self, ROWS_COUNT=8, n_steps=3, weight=[10, 50, -4, -50, -20, 0]):

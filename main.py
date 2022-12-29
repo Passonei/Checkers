@@ -1,7 +1,8 @@
 from checkers import Checkers
-from heuristic_agent import agent_one_step_heuristic
-from minmax_agent import agent_minmax
+from Agents.heuristic_agent import agent_one_step_heuristic
+from Agents.minmax_agent import agent_minmax
 import time
+from datetime import timedelta
 
 def show_result(ratio, player1, player2):
     print(f"White_ratio {player1.__class__.__name__}: {ratio[0]} [%]")
@@ -42,4 +43,4 @@ if __name__ == "__main__":
             print("No available video device. Run with changing Checker's show parameter to False.")
 
     stop = time.time()
-    print(stop-start)
+    print(timedelta(seconds = (stop-start)))
