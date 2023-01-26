@@ -26,7 +26,7 @@ The game has official rules such as:
   <p align="center">
   <b> Example game between two agents <b/>   
   
-  ![](https://github.com/Passonei/Checkers/blob/master/SampleGame.gif)  
+  ![](https://github.com/Passonei/Checkers/blob/master/Gifs/SampleGame.gif)  
   </p>
   
   #### play_vs_agent(player_turn, agent)  
